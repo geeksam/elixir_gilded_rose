@@ -9,14 +9,19 @@ defmodule GildedRose do
     item
   end
 
-
   defp update_item(item = %Item{name: "Aged Brie"}) do
-    quality_modifier = if( item.sell_in <= 0, do: 2, else: 1 )
-    new_quality = item.quality + quality_modifier
+    new_quality = item.quality + quality_modifier(item)
     new_quality = if( new_quality > 50, do: 50, else: new_quality )
 
     new_sell_in = item.sell_in - 1
     %{item | quality: new_quality, sell_in: new_sell_in}
+  end
+
+  defp quality_modifier( item = %Item{ name: "Aged Brie", sell_in: sell_in} ) when sell_in <= 0 do
+    2
+  end
+  defp quality_modifier( item = %Item{name: "Aged Brie"} ) do
+    1
   end
 
   defp update_item(item) do
