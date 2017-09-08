@@ -5,11 +5,11 @@ defmodule GildedRose do
     Enum.map( items, &( update_item(&1) ) )
   end
 
-  defp update_item(item = %Item{name: "Sulfuras, Hand of Ragnaros"}) do
+  defp update_item(item = %Item{ name: "Sulfuras, Hand of Ragnaros" }) do
     item
   end
 
-  defp update_item(item = %Item{name: "Aged Brie"}) do
+  defp update_item(item = %Item{ name: "Aged Brie" }) do
     item
     |> update_item_quality
     |> cap_quality
@@ -19,30 +19,30 @@ defmodule GildedRose do
   defp quality_modifier( item = %Item{ name: "Aged Brie", sell_in: sell_in} ) when sell_in <= 0 do
     2
   end
-  defp quality_modifier( item = %Item{name: "Aged Brie"} ) do
+  defp quality_modifier( item = %Item{ name: "Aged Brie" } ) do
     1
   end
 
   defp update_item_quality(item) do
     modifier = quality_modifier(item)
-    %{item | quality: modifier + item.quality}
+    %{ item | quality: modifier + item.quality }
   end
 
-  defp cap_quality(item = %Item{quality: quality}) when quality > 50 do
-    %{item | quality: 50}
+  defp cap_quality(item = %Item{ quality: quality }) when quality > 50 do
+    %{ item | quality: 50 }
   end
   defp cap_quality(item = %Item{}) do
     item
   end
 
-    %{item | sell_in: item.sell_in - 1}
   defp update_item_sell_in(item = %Item{}) do
+    %{ item | sell_in: item.sell_in - 1 }
   end
 
   defp update_item(item) do
     if item.name != "Backstage passes to a TAFKAL80ETC concert" do
       if item.quality > 0 do
-        item = %{item | quality: item.quality - 1}
+        item = %{ item | quality: item.quality - 1 }
       end
     else
       if item.quality < 50 do
