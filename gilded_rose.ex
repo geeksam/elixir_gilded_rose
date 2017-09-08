@@ -8,8 +8,19 @@ defmodule GildedRose do
   defp update_item(item = %Item{name: "Sulfuras, Hand of Ragnaros"}) do
     item
   end
+
+
+  defp update_item(item = %Item{name: "Aged Brie"}) do
+    quality_modifier = if( item.sell_in <= 0, do: 2, else: 1 )
+    new_quality = item.quality + quality_modifier
+    new_quality = if( new_quality > 50, do: 50, else: new_quality )
+
+    new_sell_in = item.sell_in - 1
+    %{item | quality: new_quality, sell_in: new_sell_in}
+  end
+
   defp update_item(item) do
-    if item.name != "Aged Brie" && item.name != "Backstage passes to a TAFKAL80ETC concert" do
+    if item.name != "Backstage passes to a TAFKAL80ETC concert" do
       if item.quality > 0 do
         item = %{item | quality: item.quality - 1}
       end
@@ -32,18 +43,12 @@ defmodule GildedRose do
     end
     item = %{item | sell_in: item.sell_in - 1}
     if item.sell_in < 0 do
-      if item.name != "Aged Brie" do
-        if item.name != "Backstage passes to a TAFKAL80ETC concert" do
-          if item.quality > 0 do
-            item = %{item | quality: item.quality - 1}
-          end
-        else
-          item = %{item | quality: item.quality - item.quality}
+      if item.name != "Backstage passes to a TAFKAL80ETC concert" do
+        if item.quality > 0 do
+          item = %{item | quality: item.quality - 1}
         end
       else
-        if item.quality < 50 do
-          item = %{item | quality: item.quality + 1}
-        end
+        item = %{item | quality: item.quality - item.quality}
       end
     end
     item
