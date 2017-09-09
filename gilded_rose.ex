@@ -17,24 +17,19 @@ defmodule GildedRose do
   end
 
   defp update_item(item = %Item{ name: "Backstage passes to a TAFKAL80ETC concert" }) do
-    item = %{item | quality: item.quality + 1}
-    if item.sell_in < 11 do
-      item = %{item | quality: item.quality + 1}
-    end
-    if item.sell_in < 6 do
-      item = %{item | quality: item.quality + 1}
-    end
-    if item.sell_in < 1 do
-      item = %{item | quality: item.quality - item.quality}
-    end
-
     item
+    |> update_item_quality
     |> cap_quality
     |> update_item_sell_in
   end
 
   defp quality_modifier( item = %Item{ name: "Aged Brie", sell_in: sell_in} ) when sell_in <= 0 do ; 2 ; end
   defp quality_modifier( item = %Item{ name: "Aged Brie" } )                                    do ; 1 ; end
+
+  defp quality_modifier( item = %Item{ name: "Backstage passes to a TAFKAL80ETC concert", sell_in: sell_in} ) when sell_in < 1  do ; -item.quality ; end
+  defp quality_modifier( item = %Item{ name: "Backstage passes to a TAFKAL80ETC concert", sell_in: sell_in} ) when sell_in < 6  do ; 3             ; end
+  defp quality_modifier( item = %Item{ name: "Backstage passes to a TAFKAL80ETC concert", sell_in: sell_in} ) when sell_in < 11 do ; 2             ; end
+  defp quality_modifier( item = %Item{ name: "Backstage passes to a TAFKAL80ETC concert" } )                                    do ; 1             ; end
 
   defp update_item_quality(item) do
     modifier = quality_modifier(item)
