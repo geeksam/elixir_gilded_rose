@@ -24,12 +24,13 @@ defmodule GildedRose do
     if item.sell_in < 6 do
       item = %{item | quality: item.quality + 1}
     end
-    item = %{item | sell_in: item.sell_in - 1}
-    if item.sell_in < 0 do
+    if item.sell_in < 1 do
       item = %{item | quality: item.quality - item.quality}
     end
+
     item
     |> cap_quality
+    |> update_item_sell_in
   end
 
   defp quality_modifier( item = %Item{ name: "Aged Brie", sell_in: sell_in} ) when sell_in <= 0 do ; 2 ; end
