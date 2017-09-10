@@ -23,6 +23,18 @@ defmodule GildedRose do
     |> update_item_sell_in
   end
 
+  defp update_item(item) do
+    item = %{item | sell_in: item.sell_in - 1}
+    if item.sell_in < 0 do
+      if item.quality > 0 do
+        item = %{item | quality: item.quality - 1}
+      end
+    end
+    item
+    |> update_item_quality
+    |> cap_quality
+  end
+
   defp quality_modifier( item = %Item{ name: "Aged Brie", sell_in: sell_in} ) when sell_in <= 0 do ; 2 ; end
   defp quality_modifier( item = %Item{ name: "Aged Brie" } )                                    do ; 1 ; end
 
@@ -50,18 +62,6 @@ defmodule GildedRose do
 
   defp update_item_sell_in(item = %Item{}) do
     %{ item | sell_in: item.sell_in - 1 }
-  end
-
-  defp update_item(item) do
-    item = %{item | sell_in: item.sell_in - 1}
-    if item.sell_in < 0 do
-      if item.quality > 0 do
-        item = %{item | quality: item.quality - 1}
-      end
-    end
-    item
-    |> update_item_quality
-    |> cap_quality
   end
 
 end
