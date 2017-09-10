@@ -31,13 +31,18 @@ defmodule GildedRose do
   defp quality_modifier( item = %Item{ name: "Backstage passes to a TAFKAL80ETC concert", sell_in: sell_in} ) when sell_in < 11 do ; 2             ; end
   defp quality_modifier( item = %Item{ name: "Backstage passes to a TAFKAL80ETC concert" } )                                    do ; 1             ; end
 
+  defp quality_modifier( item = %Item{} ) do ; -1 ; end
+
   defp update_item_quality(item) do
     modifier = quality_modifier(item)
-    %{ item | quality: modifier + item.quality }
+    %{ item | quality: item.quality + modifier }
   end
 
   defp cap_quality(item = %Item{ quality: quality }) when quality > 50 do
     %{ item | quality: 50 }
+  end
+  defp cap_quality(item = %Item{ quality: quality }) when quality < 0 do
+    %{ item | quality: 0 }
   end
   defp cap_quality(item = %Item{}) do
     item
@@ -48,9 +53,6 @@ defmodule GildedRose do
   end
 
   defp update_item(item) do
-    if item.quality > 0 do
-      item = %{ item | quality: item.quality - 1 }
-    end
     item = %{item | sell_in: item.sell_in - 1}
     if item.sell_in < 0 do
       if item.quality > 0 do
@@ -58,6 +60,8 @@ defmodule GildedRose do
       end
     end
     item
+    |> update_item_quality
+    |> cap_quality
   end
 
 end
