@@ -12,15 +12,15 @@ defmodule GildedRose do
   defp update_item(item = %Item{ name: "Aged Brie" }) do
     item
     |> update_item_quality
-    |> cap_quality
     |> update_item_sell_in
+    |> cap_quality
   end
 
   defp update_item(item = %Item{ name: "Backstage passes to a TAFKAL80ETC concert" }) do
     item
     |> update_item_quality
-    |> cap_quality
     |> update_item_sell_in
+    |> cap_quality
   end
 
   defp update_item(item) do
