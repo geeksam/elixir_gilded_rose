@@ -7,7 +7,7 @@ defmodule GildedRose do
   @conjured  "Conjured Mana Cake"
 
   def update_quality(items) do
-    Enum.map( items, &(update_item(&1) ) )
+    Enum.map( items, &update_item(&1) )
   end
 
   defp update_item(item) do
