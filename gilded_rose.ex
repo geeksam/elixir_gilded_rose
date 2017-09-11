@@ -17,15 +17,6 @@ defmodule GildedRose do
     |> enforce_quality_constraints
   end
 
-  defp quality_modifier( item = %Item{ name: @sulfuras} ),                                 do: 0
-  defp quality_modifier( item = %Item{ name: @aged_brie } ),                               do: 1
-  defp quality_modifier( item = %Item{ name: @backstage, sell_in: days } ) when days <  0, do: -item.quality
-  defp quality_modifier( item = %Item{ name: @backstage, sell_in: days } ) when days <  5, do: 3
-  defp quality_modifier( item = %Item{ name: @backstage, sell_in: days } ) when days < 10, do: 2
-  defp quality_modifier( item = %Item{ name: @backstage } ),                               do: 1
-  defp quality_modifier( item = %Item{ name: @conjured } ),                                do: -2
-  defp quality_modifier( item = %Item{} ),                                                 do: -1
-
   defp update_item_sell_in( item = %Item{ name: @sulfuras } ) do
     item
   end
@@ -39,6 +30,15 @@ defmodule GildedRose do
   defp update_item_quality( item = %Item{} ) do
     %{item | quality: item.quality + quality_modifier(item) }
   end
+
+  defp quality_modifier( item = %Item{ name: @sulfuras} ),                                 do: 0
+  defp quality_modifier( item = %Item{ name: @aged_brie } ),                               do: 1
+  defp quality_modifier( item = %Item{ name: @backstage, sell_in: days } ) when days <  0, do: -item.quality
+  defp quality_modifier( item = %Item{ name: @backstage, sell_in: days } ) when days <  5, do: 3
+  defp quality_modifier( item = %Item{ name: @backstage, sell_in: days } ) when days < 10, do: 2
+  defp quality_modifier( item = %Item{ name: @backstage } ),                               do: 1
+  defp quality_modifier( item = %Item{ name: @conjured } ),                                do: -2
+  defp quality_modifier( item = %Item{} ),                                                 do: -1
 
   defp enforce_quality_constraints(item = %Item{ name: @sulfuras } ),        do: item
   defp enforce_quality_constraints(item = %Item{ quality: q } ) when q > 50, do: %{ item | quality: 50 }
